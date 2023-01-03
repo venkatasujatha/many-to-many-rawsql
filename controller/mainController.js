@@ -10,14 +10,18 @@ const insert = async (req, res) => {
         m_id =req.body.m_id;
         manager_name =req.body.manager_name;
         manager_age =req.body.manager_age;
-        if(employee_name &&employee_age )
+        if(employee_name &&employee_age && manager_name && manager_age )
         {
             const sql = await database.query(
                 `INSERT INTO Employee(employee_name,employee_age) VALUES ('${employee_name}',${employee_age});
                   INSERT INTO Manager(manager_name,manager_age) VALUES ('${manager_name}',${manager_age});`
               );
               console.log('inserted data into db',sql.rowCount)
-              
+
+               res.status(200).json({
+          message: "inserted data into db",
+          res: sql.rowCount
+        });
         }
         else
 
@@ -25,7 +29,11 @@ const insert = async (req, res) => {
             const sql =await database.query(
                 `INSERT INTO manager_employee(m_id,emp_id) VALUES (${m_id},${emp_id})`);
                 console.log('inserted data into db',sql.rowCount)
-        }
+                res.status(200).json({
+                    message: "inserted data into db",
+                    res: sql.rowCount
+        })
+    }
      
     }
     catch(error)
